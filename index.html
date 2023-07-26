@@ -61,17 +61,17 @@
 
         .youtube-icon {
             transform: translateX(-50%) translateY(-50%) translateX(-80px);
-            color: #FF0000; /* Cor do ícone do YouTube */
+            color: #FF0000;
         }
 
         .github-icon {
             transform: translateX(-50%) translateY(-50%);
-            color: black; /* Cor do ícone do GitHub */
+            color: black;
         }
 
         .discord-icon {
             transform: translateX(-50%) translateY(-50%) translateX(80px);
-            color: #7289DA; /* Cor do ícone do Discord */
+            color: #7289DA;
         }
 
         .particle {
@@ -156,8 +156,8 @@
             particle.className = 'particle';
             particle.style.left = `${Math.random() * window.innerWidth}px`;
             particle.style.top = `${Math.random() * window.innerHeight}px`;
-            particle.vx = (Math.random() - 0.5) * 2; // Velocidade horizontal
-            particle.vy = (Math.random() - 0.5) * 2; // Velocidade vertical
+            particle.vx = (Math.random() - 0.5) * 2;
+            particle.vy = (Math.random() - 0.5) * 2;
             document.body.appendChild(particle);
             particles.push(particle);
         }
@@ -184,16 +184,16 @@
 
         setInterval(() => {
             particles.forEach((particle) => {
-                particle.vy += gravity; // Aplica a gravidade à velocidade vertical
+                particle.vy += gravity;
                 const x = parseFloat(particle.style.left) + particle.vx;
                 const y = parseFloat(particle.style.top) + particle.vy;
 
-                // Detecta a colisão com as bordas e faz a partícula quicar
+                
                 if (x < 0 || x > window.innerWidth) {
                     particle.vx *= -1;
                 }
                 if (y > window.innerHeight) {
-                    particle.vy *= -0.9; // Perde um pouco de velocidade quando quica
+                    particle.vy *= -0.9;
                     particle.style.top = `${window.innerHeight}px`;
                 }
 
