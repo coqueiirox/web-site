@@ -10,28 +10,13 @@
             100% {background-position: 0% 50%;}
         }
 
-        @keyframes rgb {
-            0% {border-color: red;}
-            14% {border-color: orange;}
-            28% {border-color: yellow;}
-            42% {border-color: lime;}
-            57% {border-color: blue;}
-            71% {border-color: indigo;}
-            85% {border-color: violet;}
-            100% {border-color: red;}
-        }
-
-        @keyframes fade {
-            0% {opacity: 0;}
-            20% {opacity: 1;}
-            80% {opacity: 1;}
-            100% {opacity: 0;}
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         body {
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
             color: #fff;
             font-family: Arial, sans-serif;
             height: 100vh;
@@ -39,6 +24,9 @@
             overflow: hidden;
             position: relative;
             cursor: none;
+            background: linear-gradient(270deg, #1A2980, #26D0CE);
+            background-size: 200% 200%;
+            animation: gradient 30s ease infinite, pulse 6s ease infinite;
         }
 
         h1 {
@@ -61,48 +49,17 @@
 
         .youtube-icon {
             transform: translateX(-50%) translateY(-50%) translateX(-80px);
-            color: #FF0000;
+            color: #FF0000; /* Cor do ícone do YouTube */
         }
 
         .github-icon {
             transform: translateX(-50%) translateY(-50%);
-            color: black;
+            color: white; /* Cor do ícone do GitHub */
         }
 
         .discord-icon {
             transform: translateX(-50%) translateY(-50%) translateX(80px);
-            color: #7289DA;
-        }
-
-        .particle {
-            position: absolute;
-            height: 10px;
-            width: 10px;
-            background-color: white;
-            border-radius: 50%;
-            transition: top 0.5s, left 0.5s;
-            z-index: 0;
-        }
-
-        .raindrop {
-            position: absolute;
-            height: 15px;
-            width: 2px;
-            background-color: white;
-            z-index: 0;
-        }
-
-        #mouse-cursor {
-            position: absolute;
-            height: 30px;
-            width: 30px;
-            background-color: white;
-            border-radius: 50%;
-            pointer-events: none;
-            transition: top 0.05s, left 0.05s;
-            border: 3px solid;
-            animation: rgb 2s linear infinite;
-            z-index: 20;
+            color: #7289DA; /* Cor do ícone do Discord */
         }
 
         #discord-popup {
@@ -116,10 +73,41 @@
             border-radius: 10px;
             color: #fff;
             z-index: 100;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #mouse-cursor {
+            position: absolute;
+            height: 30px;
+            width: 30px;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 20;
+            box-shadow: 0px 0px 15px #fff;
+        }
+
+        .fog {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('https://raw.githubusercontent.com/nikhil-vats/fog-animation/master/img/fog.png') repeat 0 0;
+            animation: fog 30s infinite linear;
+        }
+
+        @keyframes fog {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="fog"></div>
     <h1>Hello It's me, Coqueiirox</h1>
     <a href="https://www.youtube.com/channel/UCLo9KPWwi9sA7xOjQ20_sKQ" target="_blank" class="link-icon youtube-icon">
         <i class="fab fa-youtube"></i>
@@ -137,78 +125,21 @@
         function showDiscordAlert() {
             const popup = document.getElementById('discord-popup');
             popup.style.display = 'block';
-            popup.style.animation = 'fade 3s';
+            popup.style.opacity = 1;
             setTimeout(() => {
-                popup.style.display = 'none';
-                popup.style.animation = '';
+                popup.style.opacity = 0;
             }, 3000);
         }
 
-        const numParticles = 50;
-        const numRaindrops = 100;
-        const gravity = 0.1;
-
-        const particles = [];
-        const raindrops = [];
-
-        for(let i = 0; i < numParticles; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = `${Math.random() * window.innerWidth}px`;
-            particle.style.top = `${Math.random() * window.innerHeight}px`;
-            particle.vx = (Math.random() - 0.5) * 2;
-            particle.vy = (Math.random() - 0.5) * 2;
-            document.body.appendChild(particle);
-            particles.push(particle);
-        }
-
-        for(let i = 0; i < numRaindrops; i++) {
-            const raindrop = document.createElement('div');
-            raindrop.className = 'raindrop';
-            raindrop.style.left = `${Math.random() * window.innerWidth}px`;
-            raindrop.style.top = `${Math.random() * -window.innerHeight}px`;
-            document.body.appendChild(raindrop);
-            raindrops.push(raindrop);
-        }
-
-        let mouseX = 0, mouseY = 0;
-
         document.onmousemove = function(e) {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+            const x = (window.innerWidth - e.pageX*2)/100;
+            const y = (window.innerHeight - e.pageY*2)/100;
+            document.body.style.backgroundPosition = x + 'px ' + y + 'px';
 
             const cursor = document.getElementById('mouse-cursor');
-            cursor.style.left = `${mouseX - cursor.offsetWidth / 2}px`;
-            cursor.style.top = `${mouseY - cursor.offsetHeight / 2}px`;
+            cursor.style.left = `${e.pageX - cursor.offsetWidth / 2}px`;
+            cursor.style.top = `${e.pageY - cursor.offsetHeight / 2}px`;
         };
-
-        setInterval(() => {
-            particles.forEach((particle) => {
-                particle.vy += gravity;
-                const x = parseFloat(particle.style.left) + particle.vx;
-                const y = parseFloat(particle.style.top) + particle.vy;
-
-                
-                if (x < 0 || x > window.innerWidth) {
-                    particle.vx *= -1;
-                }
-                if (y > window.innerHeight) {
-                    particle.vy *= -0.9;
-                    particle.style.top = `${window.innerHeight}px`;
-                }
-
-                particle.style.left = `${x}px`;
-                particle.style.top = `${y}px`;
-            });
-
-            raindrops.forEach((raindrop) => {
-                raindrop.style.top = `${parseFloat(raindrop.style.top) + 5}px`;
-
-                if(parseFloat(raindrop.style.top) > window.innerHeight) {
-                    raindrop.style.top = `${Math.random() * -window.innerHeight}px`;
-                }
-            });
-        }, 25);
     </script>
 </body>
 </html>
